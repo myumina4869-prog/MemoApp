@@ -1,10 +1,9 @@
 import { JSX } from "react"
 import { View, Text, StyleSheet, ScrollView } from "react-native"
-import {Feather} from '@expo/vector-icons'
 
 import Header from '../../components/Header'
 import CircleButton from "../../components/CircleButton"
-
+import Icon from '../../components/Icon'
 
 const Detail = (): JSX.Element => {
     return (
@@ -24,7 +23,7 @@ const Detail = (): JSX.Element => {
             </ScrollView>
             {/* 編集ボタン */}
             <CircleButton style={{ top: 160, bottom: 'auto' }}>
-                <Feather name='plus' size={40}/>
+                <Icon name='pencil' size={40} color="#FFFFFF"/>
             </CircleButton>
         </View>
     )
@@ -56,7 +55,7 @@ const styles = StyleSheet.create({
         paddingVertical: 32,
         paddingHorizontal: 27
     },
-    memoBodtText: {
+    memoBodyText: {
         fontSize: 16,
         lineHeight: 24,
         color: '#000000'
