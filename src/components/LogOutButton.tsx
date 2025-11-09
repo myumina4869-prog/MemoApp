@@ -1,12 +1,27 @@
 import { JSX } from "react"
 import {
     TouchableOpacity, Text,
-    StyleSheet
- } from "react-native"
+    StyleSheet,
+    Alert
+} from "react-native"
+import { signOut } from 'firebase/auth'
+
+import { auth } from "../config"
+import { router } from "expo-router"
+
+const handlePress = ():void => {
+    signOut(auth)
+        .then(() => {
+            router.replace('/auth/log_in')
+        })
+        .catch(() => {
+            Alert.alert('ログインに失敗しました')
+        })
+}
 
 const LogOutButton = (): JSX.Element => {
     return (
-        <TouchableOpacity>
+        <TouchableOpacity onPress={handlePress}>
             <Text style={styles.text}>ログアウト</Text>
         </TouchableOpacity>
     )
@@ -15,7 +30,7 @@ const LogOutButton = (): JSX.Element => {
 const styles = StyleSheet.create({
     text: {
         fontSize: 12,
-        LineHeight: 24,
+        lineHeight: 24,
         color: 'rgba(255,255,255,0.7)'
     }
 })
