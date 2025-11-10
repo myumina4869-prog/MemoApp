@@ -1,18 +1,21 @@
 import {
-    View, TextInput, StyleSheet, KeyboardAvoidingView
-} from "react-native"
+    View, TextInput, StyleSheet} from "react-native"
 import { router } from "expo-router"
-import { collection, addDoc } from 'firebase/firestore'
+import { collection, addDoc, Timestamp } from 'firebase/firestore'
+import { useState } from "react"
 
+import KeyboadAvoidingView from '../../components/KeyboadAvoidingView'
 import { JSX } from "react"
 import CircleButton from "../../components/CircleButton"
 import Icon from "../../components/Icon"
 import { db, auth } from "../../config"
 
-const handlePress = (): void => {
+const handlePress = (bodyText: string): void => {
+    if (auth.currentUser === null) { return }
     const ref = collection(db, `users/${auth.currentUser.uid}/memos`)
     addDoc(ref, {
-        bodyText: 'Test'
+        bodyText,
+        updatedAt: Timestamp.fromDate(new Date())
     })
         .then((docRef) => {
             console.log('success', docRef.id)
@@ -23,22 +26,30 @@ const handlePress = (): void => {
         })
 }
 
-const Create = (): JSX.Element =>{
+const Create = (): JSX.Element => {
+    const [bodyText, setBodyText] = useState('')
     return (
-        <KeyboardAvoidingView behavior="height" style={styles.container}>
+        <KeyboadAvoidingView style={styles.container}>
             <View style={styles.inputContainer}>
-                <TextInput multiline style={styles.input} value='' />
+                <TextInput
+                    multiline
+                    style={styles.input}
+                    value={bodyText}
+                    onChangeText={(text) => { setBodyText(text) }}
+                    autoFocus
+                />
             </View>
-            <CircleButton onPress={handlePress}>
+            <CircleButton onPress={()=>{handlePress(bodyText)}} >
                 <Icon name='check' size={40} color='#FFFFFF' />
             </CircleButton>
-        </KeyboardAvoidingView>
+        </KeyboadAvoidingView>
     )
 }
 
 const styles = StyleSheet.create({
     container:{
-        flex: 1
+        flex: 1,
+        position: 'relative'
     },
     inputContainer: {
         paddingVertical: 32,
