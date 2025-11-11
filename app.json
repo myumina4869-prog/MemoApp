@@ -16,10 +16,10 @@
     "ios": {
       "supportsTablet": false,
       "bundleIdentifier": "jp.memoapp.umi-app",
-      "buildNumber":"1.0.0"
+      "buildNumber": "1.0.0"
     },
     "android": {
-      "package":"jp.memoapp.umi-app",
+      "package": "jp.memoapp.umi",
       "versionCode": 1,
       "permissions": [],
       "adaptiveIcon": {
@@ -35,6 +35,12 @@
     "plugins": [
       "expo-router",
       "expo-font"
-    ]
+    ],
+    "extra": {
+      "router": {},
+      "eas": {
+        "projectId": "188166da-38c2-4217-aabd-d6bd186c6f43"
+      }
+    }
   }
 }
