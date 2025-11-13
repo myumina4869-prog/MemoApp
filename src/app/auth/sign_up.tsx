@@ -21,7 +21,7 @@ const handlePress = (email: string, password: string): void =>{
         .catch((error) => {
             const {code,message} = error
             console.log(code, message)
-            Alert.alert(message)
+            Alert.alert('サインアップに失敗しました')
         })
 }
 

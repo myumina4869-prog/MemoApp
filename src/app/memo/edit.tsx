@@ -4,7 +4,7 @@ import {
 } from "react-native"
 import { router, useLocalSearchParams } from "expo-router"
 import { useState, useEffect } from "react"
-import {doc, getDoc, setDoc, Timestamp} from 'firebase/firestore'
+import {doc, getDoc, setDoc, Timestamp, collection} from 'firebase/firestore'
 
 import KeyboardAvoidingView from "../../components/KeyboadAvoidingView"
 import { JSX } from "react"
@@ -12,20 +12,30 @@ import CircleButton from "../../components/CircleButton"
 import Icon from "../../components/Icon"
 import {auth, db} from '../../config'
 
+// /memo/edit.tsx の handlePress 関数全体
 const handlePress = (id: string, bodyText: string): void => {
     if (auth.currentUser == null) { return }
-    const ref = doc(db, `users/${auth.currentUser.uid}/memos`, id)
+
+    // ★ 修正: IDが有効かチェックし、有効でなければ新しいドキュメント参照を生成
+    const docId = id && id !== 'undefined' ? id : null
+
+    // IDがない場合は collection().doc() を実行して新しい ID を取得
+    const ref = docId
+        ? doc(db, `users/${auth.currentUser.uid}/memos`, docId)
+        : doc(collection(db, `users/${auth.currentUser.uid}/memos`))
+
     setDoc(ref, {
         bodyText,
-        upDatedAt: Timestamp.fromDate(new Date())
+        // (キー名は既に直っているとして)
+        updatedAt: Timestamp.fromDate(new Date())
     })
-        .then(() => {
-            router.back()
-        })
-        .catch((error) => {
-            console.log(error)
-            Alert.alert('更新に失敗しました')
-        })
+    .then(() => {
+        router.back() // これで遷移するようになります
+    })
+    .catch((error) => {
+        console.log(error)
+        Alert.alert('更新に失敗しました')
+    })
 }
 
 const Edit = (): JSX.Element => {

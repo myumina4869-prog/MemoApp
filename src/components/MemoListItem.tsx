@@ -44,7 +44,7 @@ const MemoListItem = (props: Props): JSX.Element | null=> {
             asChild
         >
             <TouchableOpacity style = { styles.memoListItem }>
-                <View>
+                <View style={styles.memoContentContainer}>
                     <Text numberOfLines={1} style={styles.memoListItemTitle}>{bodyText}</Text>
                     <Text style={styles.memoListItemDate}>{dateString}</Text>
                 </View>
@@ -66,6 +66,9 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         borderBottomWidth: 1,
         borderColor: 'rgba(0,0,0,0.15)'
+    },
+    memoContentContainer: {
+        flex: 1
     },
     memoListItemTitle: {
         fontSize: 16,
